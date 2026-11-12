@@ -28,8 +28,11 @@ A trader is a Bitsocial author: an Ed25519 key, optionally with a `.bso` name. T
 {"domainSeparator":"pkc-author-wallet","authorAddress":"<author address>","timestamp":<unix seconds>}
 ```
 
+Hopium supports many chains ([open-questions.md](open-questions.md#chains)), which fall into two families. EVM chains share one address format, one wallet and one proof, so adding one is mostly configuration: a chain ID, an RPC, a data source and a swap aggregator. Solana needs its own proof, wallet and data source.
+
 Hopium needs:
 
+- **An EVM proof that covers every EVM chain.** The same address exists on all of them, so a trader should not have to sign once per chain.
 - **A Solana proof.** An Ed25519 signature from the Solana wallet over the same message, with its own signature `type`.
 - **A spec.** The proof formats in a BSIP, so every client verifies them the same way and computes the same track record.
 - **A stable binding.** The author address is the `.bso` name when the author has one, otherwise the key. A proof signed over a name has to be redone when the name changes, and stops matching if the name is lost. A track record should survive a name change, so proofs for trading should bind to the key. See [open-questions.md](open-questions.md#wallet-linking).
@@ -127,7 +130,8 @@ It reuses the design of pubsub voting ([BSIP-18](https://bsips.bitsocial.net/bsi
 
 **What pubsub voting lacks today:**
 
-- **Solana.** Bundles are EIP-712 signatures bound to EVM block numbers, and most memecoins trade on Solana.
+- **Solana.** Bundles are EIP-712 signatures bound to EVM block numbers, so Solana tokens can't have rooms yet.
+- **More than one chain per deployment.** A contest names one EVM chain. Rooms for tokens on several EVM chains are separate topics, each read from its own chain, which the design already allows.
 - **A token-balance rule.** The only registered eligibility rule checks soulbound NFTs. A fungible-balance rule exists in the code but stays unregistered until it has a holding-time guard and a bound on the tally.
 
 **Cost.** Every peer checks balances through a chain RPC before forwarding a message. Pubsub voting checks eligibility at bucketed block numbers, so peers can cache each wallet's eligibility per bucket to keep RPC load down.

@@ -14,11 +14,13 @@ No code yet.
 
 Hopium has four parts with different dependencies. Three can start now.
 
+Chains: the first version supports every chain Fomo supports (Ethereum, Solana, Robinhood Chain, Base, BNB Chain, Monad), then as many as possible ([open-questions.md](open-questions.md#chains)). They are two families of work. All EVM chains share one wallet, one wallet proof (already in `bitsocial-react-hooks`) and one address format, so each further EVM chain is mostly configuration. Solana is the second family, with its own wallet, proof and data. Every milestone below covers both families; chain-specific code sits behind one interface per concern (trade history, prices, swaps) so a chain is added without touching the rest.
+
 | Part | Depends on | State of the dependency (2026-11-12) |
 |---|---|---|
-| Receipts and track records | Solana chain data | Available from third-party providers. Nothing in Bitsocial blocks it |
-| Reading calls | Profiles ([BSIP-14](https://bsips.bitsocial.net/bsip-14)), crossposts ([BSIP-12](https://bsips.bitsocial.net/bsip-12)) | Implemented in pkc-js. `bitsocial-react-hooks` has no profile or Solana wallet support yet |
-| Trading | A Solana wallet and a swap aggregator | Available. Nothing in Bitsocial blocks it |
+| Receipts and track records | Chain data for each supported chain | Available from third-party providers. Nothing in Bitsocial blocks it |
+| Reading calls | Profiles ([BSIP-14](https://bsips.bitsocial.net/bsip-14)), crossposts ([BSIP-12](https://bsips.bitsocial.net/bsip-12)) | Implemented in pkc-js. `bitsocial-react-hooks` validates Ethereum wallet proofs only; no Solana proof yet |
+| Trading | A wallet and a swap aggregator per chain family | Available. Nothing in Bitsocial blocks it |
 | Posting calls from a browser or phone | A hosted profile node over the RPC protocol ([BSIP-17](https://bsips.bitsocial.net/bsip-17), [BSIP-11](https://bsips.bitsocial.net/bsip-11)) | Not available. No public RPC hosts profiles yet. Desktop users with their own node are not blocked |
 | Holder rooms | Pubsub voting ([BSIP-18](https://bsips.bitsocial.net/bsip-18)) extended to messages, Solana and fungible balances | Not available. See [milestone 6](#6-holder-rooms) |
 | Names, tips | `.bso` names ([BSIP-13](https://bsips.bitsocial.net/bsip-13)), Bitsocial Chain | Optional. Traders work as bare keys until then |
@@ -29,14 +31,14 @@ So the client can show receipts, calls from demo traders and a buy button before
 
 ### 1. Receipts for any wallet
 
-A web client that needs no Bitsocial data: paste a Solana wallet or token, see positions, buys and sells over time, and PnL. It answers "can the app be useful with no traders at all" from [open-questions.md](open-questions.md#who-calls-first) and builds the code every later milestone reuses.
+A web client that needs no Bitsocial data: paste a wallet or token on any supported chain, see positions, buys and sells over time, and PnL. It answers "can the app be useful with no traders at all" from [open-questions.md](open-questions.md#who-calls-first) and builds the code every later milestone reuses.
 
 - [ ] Client scaffold on the stack of 5chan and WeTube (React, Vite, `bitsocial-react-hooks`, static, hash routing) with the shared agent workflow.
-- [ ] Choose the chain data source. A plain RPC cannot serve a wallet's trade history with prices quickly; an indexing provider is needed, behind an interface so it can be replaced. Decision needed: which provider, and who holds the API key for a static client (a small proxy, or the reader's own key in settings).
+- [ ] Choose the chain data sources. A plain RPC cannot serve a wallet's trade history with prices quickly; an indexing provider is needed, behind an interface so it can be replaced. Coverage of all six starting chains, Robinhood Chain and Monad in particular, is the main selection criterion, and it may take more than one provider. Decision needed: which providers, and who holds the API key for a static client (a small proxy, or the reader's own key in settings).
 - [ ] Receipt computation as a pure library: given a wallet's trades and a time, return the position, first buy, average price and sells after. Tested with recorded transactions, so numbers can be compared across clients later.
 - [ ] Wallet and coin pages.
 
-Estimate: about 1 week. Blocked by: nothing.
+Estimate: about 2 weeks, one for the first chain of each family and the shared code, one for the remaining EVM chains and provider gaps. Blocked by: nothing.
 
 ### 2. Calls, read-only
 
@@ -44,21 +46,22 @@ Calls from demo trader profiles, shown with receipts.
 
 - [ ] **Latency experiment first**, as [open-questions.md](open-questions.md#latency) says: run a feed-only profile, publish calls, and measure how long a browser reader takes to see each one. The result decides whether an alert service is part of the first version.
 - [ ] Call format v0 for the prototype: how a post names a token ([open-questions.md](open-questions.md#call-format)). Recorded here as a prototype convention until the BSIP.
-- [ ] Solana wallet proof v0: an Ed25519 signature from the wallet, bound to the author key. Signing and verification go into `bitsocial-react-hooks`, next to the existing Ethereum proof, not into this client.
+- [ ] Wallet proofs v0. EVM: the existing Ethereum proof, accepted for the same address on every EVM chain. Solana: an Ed25519 signature from the wallet. Both bound to the author key. Signing and verification go into `bitsocial-react-hooks`, not into this client.
 - [ ] Demo trader profiles on a Bitsocial node we run, each with a linked wallet and real calls, the way WeTube's demo channel works.
 - [ ] Feed of followed traders, trader page with track record, coin page listing calls that name the token. Following is a subscription to the profile, kept in the account.
 - [ ] Each call shows its receipts and whether its time is witnessed or only stated by the trader.
 
-Estimate: 1 to 2 weeks after milestone 1. Blocked by: nothing; needs a `bitsocial-react-hooks` release for the Solana proof.
+Estimate: 1 to 2 weeks after milestone 1. Blocked by: nothing; needs a `bitsocial-react-hooks` release for the Solana proof and the EVM proof's wider scope.
 
 ### 3. Trading
 
-- [ ] Connect an external Solana wallet.
-- [ ] Buy and sell from a call or a coin page through a swap aggregator, signed by the reader's wallet.
+- [ ] Connect an external wallet: one EVM wallet for all EVM chains, one Solana wallet.
+- [ ] Buy and sell from a call or a coin page through a swap aggregator for the token's chain, signed by the reader's wallet. A chain with no usable aggregator stays read-only.
+- [ ] No bridging in the first version: the reader needs a balance on the token's chain. Cross-chain routing stays [open](open-questions.md#chains).
 - [ ] Default warnings before a buy ([open-questions.md](open-questions.md#scams)).
 - [ ] No client fee and no caller rewards in the first version; both stay [open](open-questions.md#trading).
 
-Estimate: about 1 week. Blocked by: nothing technical. The [legal questions](open-questions.md#legal-and-app-stores) need an answer before a public deployment with a buy button; local testing does not.
+Estimate: 1 to 2 weeks. Blocked by: nothing technical. The [legal questions](open-questions.md#legal-and-app-stores) need an answer before a public deployment with a buy button; local testing does not.
 
 ### 4. Posting calls
 
@@ -89,7 +92,7 @@ The furthest part. Pubsub voting as specified in BSIP-18 and shipped in `@bitsoc
 - [ ] **Solana.** Bundles are EIP-712 signatures and freshness is counted in EVM blocks. Solana needs Ed25519 signatures, slot-based buckets and an SPL balance rule. BSIP-18 lists a chain-independent criteria document as a future major revision; Solana support belongs in that revision.
 - [ ] **Moderation votes** tallied the same by every client.
 
-An EVM-only room on an ERC-20 token needs the first two and could come first as an experiment. Estimate: 4 to 8 weeks of protocol work in `pubsub-voting` before any client work, and the design questions in [open-questions.md](open-questions.md#holder-rooms) come first. Blocked by: the items above.
+Rooms for ERC-20 tokens on the EVM chains need only the first two and the fourth, so they come first; Solana rooms wait for the BSIP-18 revision. Estimate: 4 to 8 weeks of protocol work in `pubsub-voting` before any client work, and the design questions in [open-questions.md](open-questions.md#holder-rooms) come first. Blocked by: the items above.
 
 ## BSIPs
 
@@ -97,7 +100,7 @@ All existing BSIPs are drafts. Hopium builds on BSIP-2, 7, 8, 10, 11, 12, 14, 15
 
 | BSIP | Category | Requires | Written when |
 |---|---|---|---|
-| Author wallet proofs: the proof formats inside `author.wallets` for EVM and Solana, and binding to the author key. BSIP-2 defines the field but leaves the formats unspecified | Core, or an amendment to BSIP-2 | 2, 10 | After milestone 2 proves the Solana format. Concerns every client, so it should not wait for the rest of Hopium |
+| Author wallet proofs: the proof formats inside `author.wallets` for EVM and Solana, and binding to the author key. BSIP-2 defines the field but leaves the formats unspecified | Core, or an amendment to BSIP-2 | 2, 10 | After milestone 2 proves both formats. Concerns every client, so it should not wait for the rest of Hopium |
 | Calls: the token reference, direction, paid-call disclosure, timestamp witnesses, and which edits are allowed | Application | 2, 7, 12, 14, wallet proofs | After milestone 4, once real posting has tested the format |
 | Holder rooms | Application | 18, or its next major revision | With milestone 6 |
 
@@ -108,7 +111,8 @@ Changes to existing BSIPs that Hopium would ask for: wallet proof formats in or 
 ## Later
 
 - [ ] In-app wallet derived from the account ([open-questions.md](open-questions.md#trading)).
-- [ ] EVM chains.
+- [ ] More chains beyond the starting six, and user-added EVM chains.
+- [ ] Cross-chain routing.
 - [ ] `.bso` names for traders and tips on Bitsocial Chain.
 - [ ] On-chain anchoring of call hashes.
 - [ ] Client fee and caller rewards, if they are adopted.

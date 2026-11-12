@@ -14,6 +14,7 @@ The hardest question is not technical. Traders already have followings on Fomo, 
 ## Wallet Linking
 
 - What is the Solana proof format, and should EVM chains keep the current EIP-191 message?
+- `author.wallets` is keyed by chain ticker. Does one EVM proof cover the same address on every EVM chain, or does the trader sign once per chain?
 - Should trading proofs bind to the author key instead of the author address, so a name change doesn't invalidate them?
 - How many wallets can a trader link, and how does the client show a trader with few or new wallets?
 - When a trader unlinks a wallet, do its past trades still count toward their record?
@@ -69,8 +70,14 @@ The hardest question is not technical. Traders already have followings on Fomo, 
 
 ## Chains
 
-- Solana first, since most memecoin calls happen there?
-- Which EVM chains next, and is cross-chain routing in scope? In October 2026 Pump.fun launched its own bridge and Fomo announced one.
+Decided (2026-11-12): not Solana only. The first version supports every chain Fomo supports (Ethereum, Solana, Robinhood Chain, Base, BNB Chain, Monad), and Hopium adds as many chains as possible after that, including chains with little trading activity.
+
+Still open:
+
+- What does a chain need to be supported: a data source for trades and prices, a swap aggregator, and an RPC? Can a chain with no aggregator be read-only, showing calls and receipts without a buy button?
+- Can users add an EVM chain themselves in settings, the way wallets do, without waiting for a release?
+- Is cross-chain routing in scope, so a reader can buy on one chain with a balance on another? In October 2026 Pump.fun launched its own bridge and Fomo announced one.
+- Holder rooms can reach EVM chains before Solana ([roadmap.md](roadmap.md#6-holder-rooms)). Is it acceptable that rooms cover fewer chains than calls for a while?
 
 ## Legal and App Stores
 
