@@ -16,15 +16,16 @@ Social trading apps such as [Fomo](https://fomo.family) and Pump.fun's mobile ap
 
 On Hopium, a call is a signed post in the trader's own Bitsocial profile, and a track record is something every reader's client can recompute from public data:
 
-| | Fomo | Hopium |
-|---|---|---|
-| Who can hide a trader or a call | Fomo | Nobody across the network. Each community and client moderates its own view |
-| Who removed a call | Not verifiable by readers | Signed: a deletion by the trader and a removal by a moderator are different publications |
-| Where the track record comes from | Fomo's database | The trader's linked wallets on-chain, recomputable by anyone |
-| Wallet | An embedded wallet the app sets up | The reader's own wallet |
-| Fee per trade | 0.50%, gas covered except on Ethereum ([October 2026](https://airdropalert.com/blogs/fomo-vs-pump-fun/)) | Set by each client; competing clients can charge less or nothing |
-| Chains | Solana, Base, BNB Chain, Ethereum, Monad, Robinhood Chain | Solana first; see [open-questions.md](open-questions.md#chains) |
-| Can a trader leave with their followers | No | Yes. Followers follow the trader's key, which works in every Bitsocial client |
+| | Fomo | Pump.fun app | Hopium |
+|---|---|---|---|
+| Who can hide a trader or a call | Fomo | Pump.fun | Nobody across the network. Each community and client moderates its own view |
+| Who removed a call | Not verifiable by readers | Not verifiable by readers | Signed: a deletion by the trader and a removal by a moderator are different publications |
+| Where the track record comes from | Fomo's database | Pump.fun's database | The trader's linked wallets on-chain, recomputable by anyone |
+| Wallet | An embedded wallet the app sets up | A wallet the user connects, or an embedded one generated through Privy ([terms](https://pump.fun/docs/terms-and-conditions)) | The reader's own wallet |
+| Fee per trade | 0.50%, gas covered except on Ethereum ([October 2026](https://airdropalert.com/blogs/fomo-vs-pump-fun/)) | 0.45%, or 0.40% with a referral code, on top of pool fees of up to 1.25% ([October 2026](https://www.tokenpost.com/news/business/33804)) | Set by each client; competing clients can charge less or nothing |
+| Who pays callers | No rewards program for callers | Pump.fun, from its own pool, by its own ranking | No central program. A client could share its fee with the caller inside the swap; see [open-questions.md](open-questions.md#trading) |
+| Chains | Solana, Base, BNB Chain, Ethereum, Monad, Robinhood Chain | Solana, plus Robinhood Chain, BNB Chain, Base, Arc, Ink and Ethereum through its bridge | Solana first; see [open-questions.md](open-questions.md#chains) |
+| Can a trader leave with their followers | No | No | Yes. Followers follow the trader's key, which works in every Bitsocial client |
 
 ## Receipts on Every Call
 
