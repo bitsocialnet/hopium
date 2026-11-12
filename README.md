@@ -4,7 +4,7 @@
 
 **Hopium is an idea for a social trading app built on Bitsocial, where no company can hide a trader's calls or edit their track record.** Traders post calls from their own profile and link their wallets. Every reader's client checks each call against the trader's on-chain trades. Every token also gets a holder room, a peer-to-peer thread that only its holders can post in and moderate. Trades go through the reader's own wallet.
 
-> **Status: idea stage.** This repository collects the design. Nothing here is built. It fits [Phase 5 of the Bitsocial master plan](https://bitsocial.net/#master-plan-phase-5) and depends on earlier phases: profile nodes, the follows of the [Phase 3 Twitter/X alternative](https://bitsocial.net/#master-plan-phase-3), public RPCs, `.bso` names and, for tips, Bitsocial Chain.
+> **Status: idea stage.** This repository collects the design. Nothing here is built; [roadmap.md](roadmap.md) tracks what comes next and what each step waits on. It fits [Phase 5 of the Bitsocial master plan](https://bitsocial.net/#master-plan-phase-5) and depends on earlier phases: profile nodes, the follows of the [Phase 3 Twitter/X alternative](https://bitsocial.net/#master-plan-phase-3), public RPCs, `.bso` names and, for tips, Bitsocial Chain.
 
 ## The Thesis
 
@@ -65,6 +65,7 @@ The chain is only used where it is needed: for trades, optionally for timestampi
 
 - [how-it-could-work.md](how-it-could-work.md): traders, linked wallets, profiles, calls, timestamps, receipts, feeds, holder rooms, trading, moderation and what would need a spec
 - [open-questions.md](open-questions.md): design decisions not yet made
+- [roadmap.md](roadmap.md): what is built, the milestones, what blocks each one and which BSIPs Hopium would add
 
 ## License
 
