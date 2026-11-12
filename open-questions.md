@@ -52,6 +52,21 @@ The hardest question is not technical. Traders already have followings on Fomo, 
 - What fee, if any, should the first client charge?
 - Should caller rewards exist, and how do they avoid paying for pumps?
 
+## Holder Rooms
+
+- Does a holder sign room messages with their wallet, or with their Bitsocial key and a linked wallet?
+- What minimum balance and holding time keep posting cheap for real holders but costly for spammers?
+- One vote per wallet invites splitting a balance across many wallets; votes weighted by balance favor the largest holders. Which is less bad, or is there a third option?
+- How long should peers keep a room's history, and should anyone archive busy rooms?
+- Can holders pin a link by vote, such as a livestream, and replace it when the stream is taken down?
+- Should the room mark the developer's wallet and wallets that called the coin?
+- How much RPC load do balance checks add on a busy room?
+
+## Launching Tokens
+
+- Should the client let a user launch a token for a post through an existing launchpad, signed from their own wallet, with the token's metadata pointing at the post and its room?
+- How much legal exposure does helping users launch tokens add, compared with trading existing ones?
+
 ## Chains
 
 - Solana first, since most memecoin calls happen there?

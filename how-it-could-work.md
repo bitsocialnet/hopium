@@ -11,6 +11,7 @@ This is a sketch, not a spec. The conventions would become an Application-catego
 | Profile | The trader's own feed of calls, which only the trader can post to | An author community ([BSIP-14](https://bsips.bitsocial.net/bsip-14)) |
 | Call | A post that names a token, with an optional thesis | A comment ([BSIP-2](https://bsips.bitsocial.net/bsip-2)) with a token reference |
 | Group | A call group, a trading community or a coin's own community | An ordinary community ([BSIP-3](https://bsips.bitsocial.net/bsip-3)) |
+| Holder room | A token's thread, where only holders post, vote and moderate | A gossipsub topic per token with holder-gated messages, extending pubsub voting ([BSIP-18](https://bsips.bitsocial.net/bsip-18)) |
 | Trades | Swaps the trader made | On-chain, read from chain RPCs or indexers |
 | Track record | PnL, call performance, receipts | Computed from calls and chain data by the client or an indexer |
 | Trader list | A curated list of traders, such as a leaderboard | A community list ([BSIP-15](https://bsips.bitsocial.net/bsip-15)); profiles are communities |
@@ -103,11 +104,40 @@ Following a trader means following their key, as in the Phase 3 client. The feed
 
 Leaderboards and curated trader lists are community lists ([BSIP-15](https://bsips.bitsocial.net/bsip-15)) of profiles, published by whoever curates them. Clients choose which lists to show, and several can compete.
 
+## Holder Rooms
+
+A holder room is a token's own thread, where only wallets holding the token can post, reply, vote and moderate. It has no community node and no owner, so nothing has to be hosted per token. The idea comes from Esteban Abaroa, Bitsocial's original founder.
+
+It reuses the design of pubsub voting ([BSIP-18](https://bsips.bitsocial.net/bsip-18)), where holders rank communities with no server:
+
+| | Pubsub voting today | Holder room |
+|---|---|---|
+| Topic | Named by the CID of a criteria document, so every peer on it runs the same rules | Named by the CID of a room document: the chain, the token address and the room's rules |
+| Messages | One signed bundle of choices per wallet | Posts, replies and votes |
+| Who takes part | Wallets that pass an on-chain gate, checked by every peer before forwarding | Wallets holding a minimum balance of the token, checked the same way |
+| Late joiners | Fetch small root records and checkpoints from peers | The same, for recent messages |
+
+**Identity.** A message could be signed by the holder's wallet, as pubsub voting bundles are, or by the author's Bitsocial key with the wallet linked through `author.wallets`. The second keeps one identity across calls and rooms and avoids a wallet prompt for every message.
+
+**Moderation.** Holders vote to hide messages and mute wallets, and every client computes the same tally. Votes should count once per eligible wallet rather than by balance: on a fresh memecoin the developer, snipers and bundlers often hold most of the supply, and balance-weighted moderation would hand the room to them. A minimum holding time stops someone from buying a little to post or vote and selling right after.
+
+**History.** A room keeps what its peers keep, which suits live chat about a coin. A post the author wants to keep also goes into their profile.
+
+**Discovery.** Rooms are found from coin pages, from calls that name the token, and through crossposts and lists in other communities. A discovery site that stops listing a coin doesn't close its room.
+
+**What pubsub voting lacks today:**
+
+- **Solana.** Bundles are EIP-712 signatures bound to EVM block numbers, and most memecoins trade on Solana.
+- **A token-balance rule.** The only registered eligibility rule checks soulbound NFTs. A fungible-balance rule exists in the code but stays unregistered until it has a holding-time guard and a bound on the tally.
+
+**Cost.** Every peer checks balances through a chain RPC before forwarding a message. Pubsub voting checks eligibility at bucketed block numbers, so peers can cache each wallet's eligibility per bucket to keep RPC load down.
+
 ## Coin Pages
 
 A coin page is assembled, not hosted. It shows:
 
 - calls that name the token, from followed traders, followed groups and indexers,
+- the token's holder room,
 - trades in the token by followed traders,
 - holders and price from chain data and market data providers,
 - a link to the coin's own community, if its team runs one.
@@ -129,6 +159,7 @@ The client builds a swap through an existing aggregator for the chain, and the r
 
 - **Network-wide, nobody removes a call.** That includes scams and illegal content.
 - **Groups** moderate their own boards.
+- **Holder rooms** are moderated by their holders' votes ([Holder Rooms](#holder-rooms)).
 - **Clients** decide what their feeds show: hiding traders, warning on known rugs, honeypot checks and impersonation.
 - **Impersonation.** Clients identify a trader by key or by a verified name, never by a profile's title or avatar ([BSIP-14](https://bsips.bitsocial.net/bsip-14#declaring-a-profile)).
 - **Public RPC and gateway operators** can refuse to serve content, as with any Bitsocial client.
@@ -150,5 +181,6 @@ Calls and profiles don't need a chain. Bitsocial Chain would carry:
 - The call convention: the token reference, direction and paid-call disclosure.
 - The timestamp witness and anchoring format.
 - How track records are computed, so numbers match across clients and indexers. This may be a reference implementation rather than a spec.
+- Holder rooms: the room document, the message format, a token-balance eligibility rule for SPL and ERC-20 tokens with a holding time, and moderation votes.
 
-The call and receipt conventions would go into one Application-category BSIP. Wallet proofs concern every Bitsocial client, so they may belong in BSIP-2 or a BSIP of their own.
+The call and receipt conventions would go into one Application-category BSIP. Holder rooms could extend BSIP-18 or get a BSIP of their own. Wallet proofs concern every Bitsocial client, so they may belong in BSIP-2 or a BSIP of their own.

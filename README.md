@@ -1,6 +1,6 @@
 # Hopium
 
-**Hopium is an idea for a social trading app built on Bitsocial, where no company can hide a trader's calls or edit their track record.** Traders post calls from their own profile and link their wallets. Every reader's client checks each call against the trader's on-chain trades. Trades go through the reader's own wallet.
+**Hopium is an idea for a social trading app built on Bitsocial, where no company can hide a trader's calls or edit their track record.** Traders post calls from their own profile and link their wallets. Every reader's client checks each call against the trader's on-chain trades. Every token also gets a holder room, a peer-to-peer thread that only its holders can post in and moderate. Trades go through the reader's own wallet.
 
 > **Status: idea stage.** This repository collects the design. Nothing here is built. It fits [Phase 5 of the Bitsocial master plan](https://bitsocial.net/#master-plan-phase-5) and depends on earlier phases: profile nodes, the follows of the [Phase 3 Twitter/X alternative](https://bitsocial.net/#master-plan-phase-3), public RPCs, `.bso` names and, for tips, Bitsocial Chain.
 
@@ -35,13 +35,23 @@ The feature centralized apps don't offer is checking each call against the calle
 
 This only covers wallets the trader linked. A trader can still trade from a wallet they didn't link, so receipts are evidence, not proof of honesty. See [how-it-could-work.md](how-it-could-work.md#receipts).
 
+## Holder Rooms
+
+Every token gets a room where only its holders can post, reply, vote and moderate. A room has no owner and no server: it is a peer-to-peer topic named after the token, and every peer checks each message's author against on-chain balances before passing it on. A discovery site can stop listing a coin, but nobody can close its room.
+
+Rooms work with any token on a supported chain, including tokens launched on pump.fun, so Hopium complements launchpads instead of competing with them. A coin's page shows its room next to the calls that name it.
+
+Holder rooms extend [pubsub voting](https://bsips.bitsocial.net/bsip-18), which already lets holders rank communities with no server, from votes to messages. See [how-it-could-work.md](how-it-could-work.md#holder-rooms).
+
+The idea comes from [Esteban Abaroa](https://github.com/estebanabaroa), Bitsocial's original founder. In 2025, when the project was still called Plebbit, he proposed making every token a thread that only its holders can post in and moderate, run peer-to-peer with no servers, found through crossposts and holder-voted lists, and compatible with existing pump.fun tokens. He also proposed launching a token with every post, which is an [open question](open-questions.md#launching-tokens) here.
+
 ## What It Is Not
 
 - **Not an exchange or a custodian.** The reader's wallet signs every trade. The client builds swaps through existing aggregators.
-- **Not a launchpad.** Tokens launch elsewhere.
+- **Not a launchpad.** Tokens launch elsewhere; calls and rooms work with any token. See [open-questions.md](open-questions.md#launching-tokens).
 - **Not a new token.** Hopium needs no token of its own. Tips can use Bitsocial Chain.
 - **Not a separate social network.** Calls are ordinary Bitsocial posts in the trader's profile, so they also show in the Phase 3 client and other Bitsocial clients, and following a trader is the same follow.
-- **Not one community per coin.** Every Bitsocial community needs an always-online node, and new tokens launch far faster than anyone could run a node for each. Coin pages are views assembled from the calls that name the token. A coin's team can still run a community for it.
+- **Not one community per coin.** Every Bitsocial community needs an always-online node, and new tokens launch far faster than anyone could run a node for each. A coin gets a holder room instead, which needs no node. A coin's team can still run a community for it.
 
 ## Why Bitsocial, Not a Blockchain
 
@@ -51,7 +61,7 @@ The chain is only used where it is needed: for trades, optionally for timestampi
 
 ## Documents
 
-- [how-it-could-work.md](how-it-could-work.md): traders, linked wallets, profiles, calls, timestamps, receipts, feeds, trading, moderation and what would need a spec
+- [how-it-could-work.md](how-it-could-work.md): traders, linked wallets, profiles, calls, timestamps, receipts, feeds, holder rooms, trading, moderation and what would need a spec
 - [open-questions.md](open-questions.md): design decisions not yet made
 
 ## License
@@ -63,5 +73,6 @@ The chain is only used where it is needed: for trades, optionally for timestampi
 - Bitsocial protocol docs: https://bitsocial.net
 - Bitsocial Improvement Proposals: https://bsips.bitsocial.net
 - Profiles: [BSIP-14 Author Communities](https://bsips.bitsocial.net/bsip-14)
+- Holder voting: [BSIP-18 Pubsub Voting](https://bsips.bitsocial.net/bsip-18) and `bitsocialnet/pubsub-voting`
 - Bitsocial Chain (names, tips): `bitsocialnet/bitsocial-chain` and https://chain.bitsocial.net
 - Sibling idea-stage repos: [WeTube](https://github.com/bitsocialnet/wetube) (YouTube alternative), [decentralized-github](https://github.com/bitsocialnet/decentralized-github) (GitHub alternative), [Infinipedia](https://github.com/bitsocialnet/infinipedia) (encyclopedia), [prediction-markets](https://github.com/bitsocialnet/prediction-markets) (prediction markets with Bitsocial discussion)
