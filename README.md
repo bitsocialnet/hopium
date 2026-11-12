@@ -1,3 +1,5 @@
+![Pepe the Frog breathing from a tank labeled HOPIUM](hopium.jpg)
+
 # Hopium
 
 **Hopium is an idea for a social trading app built on Bitsocial, where no company can hide a trader's calls or edit their track record.** Traders post calls from their own profile and link their wallets. Every reader's client checks each call against the trader's on-chain trades. Every token also gets a holder room, a peer-to-peer thread that only its holders can post in and moderate. Trades go through the reader's own wallet.
