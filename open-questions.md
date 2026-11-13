@@ -1,5 +1,7 @@
 # Open Questions
 
+> Hopium was set aside on 13 November 2026; see [Why It Was Set Aside](README.md#why-it-was-set-aside). These questions were never settled.
+
 Design decisions not yet made. These need answers before Hopium moves from idea to spec.
 
 ## Who Calls First

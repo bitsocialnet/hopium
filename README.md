@@ -4,7 +4,58 @@
 
 **Hopium is an idea for a social trading app built on Bitsocial, where no company can hide a trader's calls or edit their track record.** Traders post calls from their own profile and link their wallets. Every reader's client checks each call against the trader's on-chain trades. Every token also gets a holder room, a peer-to-peer thread that only its holders can post in and moderate. Trades go through the reader's own wallet.
 
-> **Status: idea stage.** This repository collects the design. Nothing here is built; [roadmap.md](roadmap.md) tracks what comes next and what each step waits on. It fits [Phase 5 of the Bitsocial master plan](https://bitsocial.net/#master-plan-phase-5) and depends on earlier phases: profile nodes, the follows of the [Phase 3 Twitter/X alternative](https://bitsocial.net/#master-plan-phase-3), public RPCs, `.bso` names and, for tips, Bitsocial Chain.
+> **Status: set aside on 13 November 2026.** Nothing here was built and nothing is planned. This repository is archived as a record of the idea and of why it was not pursued, for anyone who thinks of building such an app later.
+
+## Why It Was Set Aside
+
+The design was shared with an experienced trader who has used Fomo and Pump.fun's app for a long time. Their feedback, and a second look at the pitch, left no reason strong enough to build it:
+
+- **Censorship resistance matters little for calls.** A profile or a community on a web2 platform has to last for years, so its owner cares who can remove it. A call is relevant for minutes or hours. The known complaints of hidden calls are few, and traders do not choose an app over them.
+- **Fomo won on its trading engine.** Its users came for trading across chains from one balance. Hopium would build swaps through existing aggregators and leave bridging to the reader, which is a worse experience, and a small team cannot out-build Fomo or Pump.fun on execution.
+- **Fees are already too low to undercut.** Nobody changes apps to save a fraction of 0.5%.
+- **Track records are mostly verifiable already.** A trader's profit and loss on these apps is computed from on-chain wallets, and anyone can recheck a wallet with a third-party tracker. Receipts per call (did the caller hold before the call and sell after it) may be new, but a tracker site could add them without Bitsocial, and a caller can always trade from a wallet they never linked.
+- **Holder rooms solve a problem holders don't report.** Token chats on these apps are not being censored. Rooms are also the most expensive part of the design: they need pubsub voting extended to messages, fungible balances and Solana ([roadmap.md](roadmap.md#6-holder-rooms)).
+- **Rewards steered by token holders become bribes.** Redirecting caller rewards by a holder vote, to stop calls made for exit liquidity, would let callers pay voters privately. It ends up as the system Pump.fun already runs, with less money.
+- **It could reflect badly on Bitsocial.** An app whose scam calls nobody can remove network-wide, carrying the Bitsocial name, has a cost that no product advantage offsets.
+
+What is left is a demonstration that such an app can be built on Bitsocial. [WeTube](https://github.com/bitsocialnet/wetube) makes that point with a clearer case.
+
+### What Could Change This
+
+- An open protocol for cross-chain swaps and limit orders that a non-custodial client can use, so trading no longer depends on owning an engine.
+- Evidence that traders want receipts per call and that no existing app or tracker shows them.
+- Community tokens on Bitsocial Chain. A community that issues its own token has a reason for a holder-only room that a memecoin chat does not.
+
+## Where the Idea Came From
+
+Holder rooms come from [Esteban Abaroa](https://github.com/estebanabaroa), Bitsocial's original founder. The idea has two stages.
+
+**2022: a token for every community.** In the project's public Telegram group, when it was still called Plebbit:
+
+- [18 June 2022](https://t.me/bitsocialnet/216263): "each subplebbit owner can make their own token and nft and integrate them into their own sub functionality, which means if you hit it big and build a successful subplebbit, you will be rich". He added that the tools "will take several years to be all ready".
+- 10 July 2022: "in the future each subplebbit should have its own token".
+- [11 November 2022](https://t.me/bitsocialnet/310230): votes that weigh more for holders of a token the community owner chooses, always optional.
+
+**2024 and 2025: a room for every token.** In a community group chat and in the team's chat, which are not public:
+
+- 30 October 2024: "once we have the token voting thing, we could create some kind of pump.fun and the token page would be some p2p chatroom where only token holders can talk". He said then that he had never used pump.fun.
+- 7 November 2024: launching a coin on pump.fun would automatically give it a holder-only community that nobody runs. "it will be either quite revolutionary, or completely useless, we'll see". It would hold only "a few ephemeral topics/messages", with no history.
+- 1 December 2024: an automatic community for every token in existence, "like a trollbox", where large holders are moderators and heavily downvoted posts are deleted.
+- 18 January 2025, the full proposal, in the team's chat:
+  - "whenever a plebbit post is published, a token and liquidity pool launches referencing the post".
+  - The post belongs to no community. Its "votes and replies are currated by the token owners, using our pubsub token voting protocol (that isnt built yet)".
+  - "the value of the post's token comes from the ability to reply to and vote on replies if you own the token".
+  - The poster can link a livestream and change the link when the stream is taken down.
+  - "it would also be compatible with existing pump.fun tokens, with any token on any blockchain, so we don't really have to be significantly better than pump.fun and beat them, we're complementary to pump.fun".
+- 2 September 2025: a low-cap coin's holders chatting "without any intermediary, not even any sub owner" is "a novel concept that could develop a real use case".
+
+He also raised the two doubts that weighed against it here. On 8 December 2024, arguing against a chat client: "there is basically no censorship problem for instant messaging communities". On 3 June 2025, after a developer found that a pump.fun clone needs a centralized API for buys and for its main page: "is it even worth it to build on plebbit if thats the case?"
+
+Hopium kept the room and dropped the token launched with every post. The calls, track records and trading were added in November 2026 and are not his. The 2022 idea, a token for each community, continued separately in the plans for [Bitsocial Chain](https://github.com/bitsocialnet/bitsocial-chain).
+
+## The Idea as Designed
+
+The rest of this README and the other documents are the design as written before the decision, kept unchanged.
 
 ## The Thesis
 
@@ -48,7 +99,7 @@ Rooms work with any token on a supported chain, including tokens launched on pum
 
 Holder rooms extend [pubsub voting](https://bsips.bitsocial.net/bsip-18), which already lets holders rank communities with no server, from votes to messages. See [how-it-could-work.md](how-it-could-work.md#holder-rooms).
 
-The idea comes from [Esteban Abaroa](https://github.com/estebanabaroa), Bitsocial's original founder. In 2025, when the project was still called Plebbit, he proposed making every token a thread that only its holders can post in and moderate, run peer-to-peer with no servers, found through crossposts and holder-voted lists, and compatible with existing pump.fun tokens. He also proposed launching a token with every post, which is an [open question](open-questions.md#launching-tokens) here.
+The idea comes from [Esteban Abaroa](https://github.com/estebanabaroa), Bitsocial's original founder ([Where the Idea Came From](#where-the-idea-came-from)). In 2025, when the project was still called Plebbit, he proposed making every token a thread that only its holders can post in and moderate, run peer-to-peer with no servers, found through crossposts and holder-voted lists, and compatible with existing pump.fun tokens. He also proposed launching a token with every post, which is an [open question](open-questions.md#launching-tokens) here.
 
 ## What It Is Not
 
@@ -68,7 +119,7 @@ The chain is only used where it is needed: for trades, optionally for timestampi
 
 - [how-it-could-work.md](how-it-could-work.md): traders, linked wallets, profiles, calls, timestamps, receipts, feeds, holder rooms, trading, moderation and what would need a spec
 - [open-questions.md](open-questions.md): design decisions not yet made
-- [roadmap.md](roadmap.md): what is built, the milestones, what blocks each one and which BSIPs Hopium would add
+- [roadmap.md](roadmap.md): the milestones a build would have had, what blocks each one and which BSIPs Hopium would add
 
 ## License
 

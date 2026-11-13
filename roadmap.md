@@ -1,5 +1,7 @@
 # Roadmap
 
+> **Not planned.** Hopium was set aside on 13 November 2026; see [Why It Was Set Aside](README.md#why-it-was-set-aside). This file is kept as the plan a build would have followed.
+
 What is built, what is next, what each step waits on, and where each decision is written down. Update this file in the same change that finishes or reshapes an item.
 
 Durations are rough estimates of focused work, not dates. Last reviewed 2026-11-12.
