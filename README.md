@@ -22,10 +22,12 @@ On Hopium, a call is a signed post in the trader's own Bitsocial profile, and a 
 | Who removed a call | Not verifiable by readers | Not verifiable by readers | Signed: a deletion by the trader and a removal by a moderator are different publications |
 | Where the track record comes from | Fomo's database | Pump.fun's database | The trader's linked wallets on-chain, recomputable by anyone |
 | Wallet | An embedded wallet the app sets up | A wallet the user connects, or an embedded one generated through Privy ([terms](https://pump.fun/docs/terms-and-conditions)) | The reader's own wallet |
-| Fee per trade | 0.50%, gas covered except on Ethereum ([October 2026](https://airdropalert.com/blogs/fomo-vs-pump-fun/)) | 0.45%, or 0.40% with a referral code, on top of pool fees of up to 1.25% ([October 2026](https://www.tokenpost.com/news/business/33804)) | Set by each client; competing clients can charge less or nothing |
+| App fee per trade | 0.50%, gas covered except on Ethereum ([October 2026](https://airdropalert.com/blogs/fomo-vs-pump-fun/)) | 0.45%, or 0.40% with a referral code ([October 2026](https://www.tokenpost.com/news/business/33804)) | Set by each client; competing clients can charge less or nothing |
 | Who pays callers | No rewards program for callers | Pump.fun, from its own pool, by its own ranking | No central program. A client could share its fee with the caller inside the swap; see [open-questions.md](open-questions.md#trading) |
 | Chains | Solana, Base, BNB Chain, Ethereum, Monad, Robinhood Chain | Solana, plus Robinhood Chain, BNB Chain, Base, Arc, Ink and Ethereum through its bridge | Every chain Fomo supports from the start, then as many as possible; see [open-questions.md](open-questions.md#chains) |
 | Can a trader leave with their followers | No | No | Yes. Followers follow the trader's key, which works in every Bitsocial client |
+
+The app fee is what each app adds. The fee of the token's pool or launchpad, such as 1.25% on a Pump.fun bonding curve, is paid on top of it in every app, and would be on Hopium too.
 
 ## Receipts on Every Call
 
